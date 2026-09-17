@@ -1,3 +1,29 @@
 from django.shortcuts import render
 
-# Create your views here.
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Contact  
+
+@csrf_exempt
+
+def chat_view(request):
+    if request.method == 'GET':
+        contacts = list(Contact.objects.values())
+        return JsonResponse(contacts, safe=False, status=200)
+
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_entry = Contact.objects.create(
+                name=data.get('name'),
+                message=data.get('message')
+            )
+            return JsonResponse({
+                'status': 'success',
+                'id': new_entry.id
+            }, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Method not allowed'}, status=405)

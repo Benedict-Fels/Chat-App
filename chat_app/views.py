@@ -2,10 +2,7 @@ from django.shortcuts import render
 
 import json
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from .models import Contact  
-
-@csrf_exempt
 
 def chat_view(request):
     if request.method == 'GET':

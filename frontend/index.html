@@ -80,7 +80,6 @@
 <script>
     const API_URL = 'http://127.0.0.1:8000/api/chat/';
 
-    // 1. GET: Nachrichten vom Django-Backend laden
     async function fetchMessages() {
         try {
             const response = await fetch(API_URL);
@@ -99,14 +98,11 @@
                 messageList.appendChild(div);
             });
 
-            // Automatisch nach unten scrollen
-            messageList.scrollTop = messageList.scrollHeight;
         } catch (error) {
             console.error('Fehler beim Laden der Nachrichten:', error);
         }
     }
 
-    // 2. POST: Neue Nachricht an Django senden
     document.getElementById('chat-form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -123,8 +119,8 @@
             });
 
             if (response.ok) {
-                document.getElementById('message').value = ''; // Feld leeren
-                fetchMessages(); // Liste direkt neu laden
+                document.getElementById('message').value = '';
+                fetchMessages(); 
             } else {
                 console.error('Fehler beim Senden:', await response.json());
             }
